@@ -1,31 +1,37 @@
 class Bird():
-    # 클래스 변수: 새 이름(key) → 울음소리(value)
-    sound = {"앵무새" : "안녕하세요?",
-            "참새" : "짹짹",
-            "비둘기" : "9999",
-            "닭" : "교촌교촌",
-            "러버덕" : "QUACK",
-            "펭귄" : "꾸르륵"
-            }
+    
+    # 새 : 울음소리, 체중(kg), 근력(속도 대신 대입)
+    # 달리면 몸무게 x 속도가 아니력 뭐 근력같은걸로 속도 = 근력 / 몸무게 해야 하는게?
+    # 기존  sound 대신 bird_lib 딕셔너리, key 동일 value는 tuple로 값 추가함.
+    bird_lib = {
+        "앵무새": ("안녕하세요?", 3, 3),
+        "참새": ("짹짹", 2, 2),
+        "비둘기" : ("9999", 3, 2),
+        "닭" : ("교촌교촌", 4, 3),
+        "러버덕" : ("QUACK", 1, 1),
+        "펭귄" : ("꾸르륵", 5, 3)
+    }
 
     def __init__(self, birdtype: str):
         # 초기화 메서드, 새의 종류를 인스턴스에 저장
         # self.birdtype으로 현재 인스턴스 지정 
         self.birdtype = birdtype
-    
+        self.sound, self.weight, self.strength = Bird.bird_lib.get(birdtype, ("짹짹", 1, 1))
+        # 사전에 없을 경우 "짹짹"을 기본으로 사용.
+
     def birdfly(self) -> None:
         print(f"{self.birdtype}가 날고 있습니다.")
 
     def birdsing(self) -> None:
-        s = Bird.sound.get(self.birdtype, "짹짹")
-        print(f"{s}")
-        # Bird.sound로 현재 새 종류에 해당하는 울음소리 가져옴
-        # 사전에 없을 경우 "짹짹"을 기본으로 사용.
+        print(self.sound)
+    
+    def birdrun(self) -> None:
+        print(f"{birdtype}이 달립니다!\n{birdtype}의 속도: {self.strength / self.weight}")
 
 # 사용자가 그만두겠다 할 때까지 계속 입력을 받음.
 while True:
     try:
-        user_input = input("새의 종류와 행동(울기, 날기)을 입력하세요: ")
+        user_input = input("새의 종류와 행동(울기, 날기, 달리기)을 입력하세요: ")
         birdtype, action = [s.strip() for s in user_input.split(",", 1)]
         b = Bird(birdtype)
 
@@ -33,7 +39,7 @@ while True:
 # 좌우 공백 제거split, 으로 앵무새, 울기 같은 식으로 입력되어도 안전하게 처리.
 # b=Bird(birdtype)으로 입력한 새 종류를 Bird 내 인스턴스로 생성함.
 
-        if birdtype not in Bird.sound:    # 유효성 검사
+        if birdtype not in Bird.bird_lib:    # 유효성 검사
             print("다시 작성해 주세요.")
         else: 
             if action == "날기":
@@ -42,12 +48,18 @@ while True:
 # 생성한 b로 불러야 self가 전달되서 우리가 원하는 효과 발생.
             elif action == "울기":
                 b.birdsing()
+            
+# 달리기 추가
+            elif action == "달리기":
+                b.birdrun()
+
             else: # 허용되지 않는 행동 문자열에 대한 안내
-                print("지원하지 않는 행동입니다: 울기/날기 중 선택")
+                print("지원하지 않는 행동입니다: 울기/날기/달리기 중 선택")
                 
     except ValueError:
         print("오류가 발생했습니다. 다시 작성해 주세요!")
-        print(f"새 종류: {', '.join(Bird.sound.keys())}")
+        print(f"새 종류: {', '.join(Bird.bird_lib.keys())}")
+#Birdsong 대신 bird_lib으로 변경.
 
 # 예외 처리. split(",",1) 결과가 2개 아니면 ValueError 발생.
 # 이 경우 형식 오류 안내와 함께 사용 가능한 새 종류를 제시
