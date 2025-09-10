@@ -3,36 +3,41 @@ class Bird():
     # 새 : 울음소리, 체중(kg), 근력(속도 대신 대입)
     # 달리면 몸무게 x 속도가 아니력 뭐 근력같은걸로 속도 = 근력 / 몸무게 해야 하는게?
     # 기존  sound 대신 bird_lib 딕셔너리, key 동일 value는 tuple로 값 추가함.
+    # modifier 받을 수 있는 튜플 내역 추가: True/False로 지정.
     bird_lib = {
-        "앵무새": ("안녕하세요?", 3, 3),
-        "참새": ("짹짹", 2, 2),
-        "비둘기" : ("9999", 3, 2),
-        "닭" : ("교촌교촌", 4, 3),
-        "러버덕" : ("QUACK", False, False),
-        "펭귄" : ("꾸르륵", 5, 3)
+        "앵무새": ("안녕하세요?", 3, 3, True),
+        "참새": ("짹짹", 2, 2, True),
+        "비둘기" : ("9999", 3, 2, True),
+        "닭" : ("교촌교촌", 4, 3, False),
+        "러버덕" : ("QUACK", 0, 0, False),
+        "펭귄" : ("꾸르륵", 5, 3, False)
     }
 
     def __init__(self, birdtype: str):
         # 초기화 메서드, 새의 종류를 인스턴스에 저장
         # self.birdtype으로 현재 인스턴스 지정 
         self.birdtype = birdtype
-        self.sound, self.weight, self.strength = Bird.bird_lib.get(birdtype, ("짹짹", 1, 1))
+        self.sound, self.weight, self.strength, self.get_modifier = Bird.bird_lib.get(birdtype, ("짹짹", 1, 1))
         # 사전에 없을 경우 "짹짹"을 기본으로 사용.
 
     def birdfly(self) -> None:
-        if self.birdtype != "러버덕":
-            print(f"{self.birdtype}가 날고 있습니다.")
+        if self.strength >= self.weight:     # 수정: 기존의 "러버덕" 여부에서, 힘이 체중보다 크거나 같을 경우에만 날 수 있게 지정.
+            print(f"{self.birdtype}이/가 날고 있습니다.")
         else:
-            print("러버덕은 날 수 없습니다.")
+            print(f"{self.birdtype}은 날 수 없습니다.")
 
     def birdsing(self) -> None:
         print(self.sound)
     
     def birdrun(self) -> None:
-        if self.birdtype != "러버덕":
+        if self.strength > 0:    # 수정: 기존의 "러버덕" 여부 → 힘이 0 이상일 경우에만 달릴 수 있음.
             print(f"{birdtype}이 달립니다!\n{birdtype}의 속도: {self.strength / self.weight}")
         else:
-            print("러버덕은 뛸 수 없어요.")
+            print(f"{birdtype}은 뛸 수 없어요.")
+    
+    def birdmodifier(self) -> None:
+        if self.get_modifier == True:
+            print("아효")
 
 # 사용자가 그만두겠다 할 때까지 계속 입력을 받음.
 while True:
