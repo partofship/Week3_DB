@@ -8,7 +8,7 @@ class Bird():
         "참새": ("짹짹", 2, 2),
         "비둘기" : ("9999", 3, 2),
         "닭" : ("교촌교촌", 4, 3),
-        "러버덕" : ("QUACK", 1, 1),
+        "러버덕" : ("QUACK", False, False),
         "펭귄" : ("꾸르륵", 5, 3)
     }
 
@@ -20,13 +20,19 @@ class Bird():
         # 사전에 없을 경우 "짹짹"을 기본으로 사용.
 
     def birdfly(self) -> None:
-        print(f"{self.birdtype}가 날고 있습니다.")
+        if self.birdtype != "러버덕":
+            print(f"{self.birdtype}가 날고 있습니다.")
+        else:
+            print("러버덕은 날 수 없습니다.")
 
     def birdsing(self) -> None:
         print(self.sound)
     
     def birdrun(self) -> None:
-        print(f"{birdtype}이 달립니다!\n{birdtype}의 속도: {self.strength / self.weight}")
+        if self.birdtype != "러버덕":
+            print(f"{birdtype}이 달립니다!\n{birdtype}의 속도: {self.strength / self.weight}")
+        else:
+            print("러버덕은 뛸 수 없어요.")
 
 # 사용자가 그만두겠다 할 때까지 계속 입력을 받음.
 while True:
